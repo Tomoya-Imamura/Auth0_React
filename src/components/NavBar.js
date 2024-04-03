@@ -101,6 +101,25 @@ const NavBar = () => {
                     >
                       <FontAwesomeIcon icon="user" className="mr-3" /> Profile
                     </DropdownItem>
+
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/userlist"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="user" className="mr-3" /> ユーザ一覧
+                    </DropdownItem>
+
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/useradd"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="user" className="mr-3" /> ユーザ追加
+                    </DropdownItem>
+
                     <DropdownItem
                       id="qsLogoutBtn"
                       onClick={() => logoutWithRedirect()}
@@ -108,6 +127,7 @@ const NavBar = () => {
                       <FontAwesomeIcon icon="power-off" className="mr-3" /> Log
                       out
                     </DropdownItem>
+                   
                   </DropdownMenu>
                 </UncontrolledDropdown>
               )}
