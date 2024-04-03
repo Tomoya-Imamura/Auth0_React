@@ -1,13 +1,15 @@
 import React from "react";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { Container, Row, Col } from "reactstrap";
-
 import Highlight from "../components/Highlight";
 import Loading from "../components/Loading";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
+
 export const ProfileComponent = () => {
   const { user } = useAuth0();
-
+  
   return (
     <Container className="mb-5">
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
