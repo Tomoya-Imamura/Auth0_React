@@ -7,7 +7,7 @@ import {withAuthenticationRequired } from "@auth0/auth0-react";
 
 
 
-export const UserAddComponent = () => {
+export const UserUpdateComponent = () => {
     const [email, setEmail] = useState('imatomo1234imatomo@gmail.com');
     const [givenName, setGivenName] = useState('Tomoya');
     const [familyName, setFamilyName] = useState('Imamura');
@@ -58,6 +58,27 @@ export const UserAddComponent = () => {
         })()
     })
 
+
+    const getUser = (async(token) =>{
+        var myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Authorization", `Bearer ${token}`);
+
+        var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+        };
+        (async() => {
+                    
+            await fetch(`https://dev-ahsivo00r84wgtro.jp.auth0.com/api/v2/users/${id}`, requestOptions)
+                    .then(response => response.json())
+                    .catch(error => console.log('error', error));
+            }
+
+        )()
+
+    })
 
     const addUsers = (async(token) =>{
         if (token !== ""){
@@ -223,6 +244,6 @@ export const UserAddComponent = () => {
   );
 };
 
-export default withAuthenticationRequired(UserAddComponent, {
+export default withAuthenticationRequired(UserUpdateComponent, {
   onRedirecting: () => <Loading />,
 });
