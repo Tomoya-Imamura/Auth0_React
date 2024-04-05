@@ -47,6 +47,38 @@ export const UserListComponent = () => {
 
     })
 
+    const deleteUser = (async(id) =>{
+
+        let result = window.confirm('削除しますか');
+
+        if(result){
+            console.log('削除');
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${token}`);
+
+            var requestOptions = {
+                method: 'DELETE',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+            (async() => {
+                    
+                await fetch(`https://dev-ahsivo00r84wgtro.jp.auth0.com/api/v2/users/${id}`, requestOptions)
+                        .then(response => response.text())
+                        .then(result => {alert(`${id}は削除されました`);  })
+                        .then(result => getUsers(token))
+                        .catch(error => console.log('error', error));
+                }
+
+            )()
+            
+        }else{
+        console.log('削除をとりやめました');
+        }
+
+
+    })
+
     useEffect(()=> {
         getToken();
     },[]);
@@ -76,9 +108,13 @@ export const UserListComponent = () => {
                             className="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
                         />
                     </Col>
-                    <Col md>
+                    <Col md={6}>
                     <h2>{user?.name}</h2>
                     <p className="lead text-muted">{user?.email}</p>
+                    </Col>
+                    <Col md>
+                    
+                    <button onClick={() => deleteUser(user.user_id)} className="lead text-muted">削除</button>
                     </Col>
                 </Row>
                 <Row>
