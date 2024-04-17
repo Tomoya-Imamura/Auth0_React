@@ -28,6 +28,7 @@ export const UserListComponent = () => {
         })()
     })
 
+    
 
     const getUsers = (async(token) =>{
         var myHeaders = new Headers();
@@ -75,8 +76,6 @@ export const UserListComponent = () => {
         }else{
         console.log('削除をとりやめました');
         }
-
-
     })
 
     useEffect(()=> {
@@ -111,10 +110,6 @@ export const UserListComponent = () => {
                     <Col md={6}>
                     <h2>{user?.name}</h2>
                     <p className="lead text-muted">{user?.email}</p>
-                    </Col>
-                    <Col md>
-                    
-                    <button onClick={() => deleteUser(user.user_id)} className="lead text-muted">削除</button>
                     </Col>
                 </Row>
                 <Row>

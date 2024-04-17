@@ -9,6 +9,7 @@ import Home from "./views/Home";
 import Profile from "./views/Profile";
 import UserList from "./views/UserList";
 import UserAdd from "./views/UserAdd";
+import ChangeEmail from "./views/ChangeEmail";
 import ExternalApi from "./views/ExternalApi";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
