@@ -90,6 +90,8 @@ export const ProfileComponent = () => {
 
   return (
     <Container className="mb-5">
+      <h1>プロフィール画面</h1>
+      <br/>
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
         <Col md={2}>
           <img

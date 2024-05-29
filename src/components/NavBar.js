@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -34,14 +35,14 @@ const NavBar = () => {
     logout({
         logoutParams: {
           returnTo: window.location.origin,
-        }
+        },
     });
 
   return (
     <div className="nav-container">
       <Navbar color="light" light expand="md" container={false}>
         <Container>
-          <NavbarBrand className="logo" />
+         
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>
@@ -52,21 +53,10 @@ const NavBar = () => {
                   exact
                   activeClassName="router-link-exact-active"
                 >
-                  Home
+                  東邦ガス
                 </NavLink>
               </NavItem>
-              {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/external-api"
-                    exact
-                    activeClassName="router-link-exact-active"
-                  >
-                    External API
-                  </NavLink>
-                </NavItem>
-              )}
+    
             </Nav>
             <Nav className="d-none d-md-block" navbar>
               {!isAuthenticated && (
@@ -75,7 +65,9 @@ const NavBar = () => {
                     id="qsLoginBtn"
                     color="primary"
                     className="btn-margin"
-                    onClick={() => loginWithRedirect()}
+                    onClick={() => loginWithRedirect({authorizationParams: {
+                      screen_hint: "signup",
+                    }})}
                   >
                     Log in
                   </Button>
@@ -119,7 +111,14 @@ const NavBar = () => {
                     >
                       <FontAwesomeIcon icon="user" className="mr-3" /> ユーザ追加
                     </DropdownItem>
-
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/userMeta"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="user" className="mr-3" /> メアド変更確認
+                    </DropdownItem>
                     <DropdownItem
                       id="qsLogoutBtn"
                       onClick={() => logoutWithRedirect()}
@@ -139,7 +138,7 @@ const NavBar = () => {
                     id="qsLoginBtn"
                     color="primary"
                     block
-                    onClick={() => loginWithRedirect({})}
+                    onClick={() => loginWithRedirect({screen_hint: 'signup'})}
                   >
                     Log in
                   </Button>

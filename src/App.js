@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Home from "./views/Home";
 import Profile from "./views/Profile";
 import UserList from "./views/UserList";
+import UserListMeta from "./views/UserListMeta";
 import UserAdd from "./views/UserAdd";
 import ChangeEmail from "./views/ChangeEmail";
 import ExternalApi from "./views/ExternalApi";
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/profile" component={Profile} />
             <Route path="/userlist" component={UserList} />
             <Route path="/useradd" component={UserAdd} />
+            <Route path="/usermeta" component={UserListMeta} />
             <Route path="/external-api" component={ExternalApi} />
           </Switch>
         </Container>

@@ -8,7 +8,7 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 
 
-export const UserListComponent = () => {
+export const UserListMetaComponent = () => {
     const [users, setUsers] = useState([])
     const [token, setToken] = useState("")
 
@@ -30,7 +30,7 @@ export const UserListComponent = () => {
 
     
 
-    const getUsers = (async(token) =>{
+    const getMetaUsers = (async(token) =>{
         var myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Authorization", `Bearer ${token}`);
@@ -41,11 +41,57 @@ export const UserListComponent = () => {
         redirect: 'follow'
         };
         (async() => {
-             await fetch("https://dev-ahsivo00r84wgtro.jp.auth0.com/api/v2/users", requestOptions)
-            .then(response =>  response.json().then(result => { setUsers(result)}))       
+             await fetch("https://dev-ahsivo00r84wgtro.jp.auth0.com/api/v2/users?q=user_metadata.emailChanged:true&search_engine=v3", requestOptions)
+            .then(response =>  response.json().then(result => { console.log(response); setUsers(result)}))       
             .catch(error => console.log('error', error));
         })()
 
+    })
+
+    const metaDataTrue = (async(token) =>{
+        var myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", `Bearer ${token}`);
+        let result = window.confirm('メールアドレス更新を確認しましたか？');
+
+        if(result){
+
+        if(users.length!=0){
+
+        
+
+        users.map( (user) =>{
+            (async() => {
+                 
+                  // ユーザーの user_metadata を更新するリクエストを作成します
+                  const updateRequest = JSON.stringify({
+                    
+                    "user_metadata":{
+                        "beforeEmail": "",
+                        "emailChanged": false
+                      }
+                  });
+                var requestOptions = {
+                    method: 'PATCH',
+                    headers: myHeaders,
+                    body:    updateRequest,
+                    redirect: 'follow'
+                    };
+
+
+             
+                await fetch(`https://dev-ahsivo00r84wgtro.jp.auth0.com/api/v2/users/${user.user_id}`, requestOptions)
+                .then(response => response.text())
+                .then(result => {console.log(result);window.location.reload();})
+                .catch(error => console.log('error', error));
+            })()
+        })
+        }else{
+            alert("ゆーざがいません");
+            window.location.reload();
+        }
+    }
     })
 
     const deleteUser = (async(id) =>{
@@ -67,7 +113,7 @@ export const UserListComponent = () => {
                 await fetch(`https://dev-ahsivo00r84wgtro.jp.auth0.com/api/v2/users/${id}`, requestOptions)
                         .then(response => response.text())
                         .then(result => {alert(`${id}は削除されました`);  })
-                        .then(result => getUsers(token))
+                        .then(result => getMetaUsers(token))
                         .catch(error => console.log('error', error));
                 }
 
@@ -84,7 +130,7 @@ export const UserListComponent = () => {
 
     useEffect(()=> {
         if (token !== "") {
-            getUsers(token); 
+            getMetaUsers(token); 
         }
     },[token]);
 
@@ -95,8 +141,9 @@ export const UserListComponent = () => {
   return (
     
     <Container className="mb-5">
-    <h1>ユーザ一覧画面</h1>
+    <h1>ログイン時にソーシャルのメアド変更が検知されたもの</h1>
       <br/>
+      <button onClick={()=>metaDataTrue(token)}>メタデータのTrue化</button> 
         {users?.map((user,index) => {
           return(
             <div key={index}>
@@ -109,6 +156,7 @@ export const UserListComponent = () => {
                         />
                     </Col>
                     <Col md={6}>
+                      
                     <h2>{user?.name}</h2>
                     <p className="lead text-muted">{user?.email}</p>
                     </Col>
@@ -126,6 +174,6 @@ export const UserListComponent = () => {
   );
 };
 
-export default withAuthenticationRequired(UserListComponent, {
+export default withAuthenticationRequired(UserListMetaComponent, {
   onRedirecting: () => <Loading />,
 });
