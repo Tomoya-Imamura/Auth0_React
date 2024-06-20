@@ -53,12 +53,13 @@ const NavBar = () => {
                   exact
                   activeClassName="router-link-exact-active"
                 >
-                  東邦ガス
+                  CIC検証アプリ
                 </NavLink>
               </NavItem>
     
             </Nav>
             <Nav className="d-none d-md-block" navbar>
+          
               {!isAuthenticated && (
                 <NavItem>
                   <Button
@@ -105,12 +106,32 @@ const NavBar = () => {
 
                     <DropdownItem
                       tag={RouterNavLink}
+                      to="/authCheck"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="user" className="mr-3" /> 認証確認
+                    </DropdownItem>
+
+
+                    <DropdownItem
+                      tag={RouterNavLink}
                       to="/useradd"
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
                       <FontAwesomeIcon icon="user" className="mr-3" /> ユーザ追加
                     </DropdownItem>
+
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/changePassword"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="user" className="mr-3" /> パスワード変更
+                    </DropdownItem>
+
                     <DropdownItem
                       tag={RouterNavLink}
                       to="/userMeta"
@@ -119,6 +140,16 @@ const NavBar = () => {
                     >
                       <FontAwesomeIcon icon="user" className="mr-3" /> メアド変更確認
                     </DropdownItem>
+
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/social"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="user" className="mr-3" /> ソーシャル連携
+                    </DropdownItem>
+
                     <DropdownItem
                       id="qsLogoutBtn"
                       onClick={() => logoutWithRedirect()}
