@@ -9,12 +9,32 @@ import { getConfig } from "../config";
 
 export const ProfileComponent = () => {
   const {
+    loginWithRedirect,
+    getAccessTokenSilently,
     user,
+    isAuthenticated,
     logout,
+    handleRedirectCallback,
   } = useAuth0();
   const config = getConfig();
   const [token, setToken] = useState("")
  
+
+  useEffect(() => {
+    const handleAuthRedirect = async () => {
+      console.log(window.location)
+   
+        const { appState } = await handleRedirectCallback();
+        console.log("リンク")
+        const { primaryUserId, token1 } = JSON.parse(appState.state);
+
+        linkAccounts(primaryUserId, token1);
+      
+    };
+
+    handleAuthRedirect();
+  }, [handleRedirectCallback]);
+
   const logoutWithRedirect = () =>
     logout({
         logoutParams: {
@@ -51,6 +71,54 @@ export const ProfileComponent = () => {
     alert(user.email+"にパスワード変更メールを送信しました。");
   };
 
+
+  const linkAccounts = async (primaryUserId, token1) => {
+    console.log("リンクスタート");
+    const secondaryUserId = user.sub;
+    const response = await fetch( `https://${config.domain}/api/v2/users/${primaryUserId}/identities`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        primaryUserId,
+        secondaryUserId,
+        secondaryProvider: 'google-oauth2',
+      }),
+    });
+
+    if (response.ok) {
+      console.log('アカウントがリンクされました');
+    } else {
+      console.error('アカウントのリンクに失敗しました');
+    }
+  };
+
+
+  const handleLinkAccount = async () => {
+    const token1 = await getAccessTokenSilently();
+
+    await loginWithRedirect({authorizationParams: {
+      connection: 'google-oauth2',
+      state: JSON.stringify({ primaryUserId: user.sub, token1 }),
+      redirect_uri: `${window.location.origin}/callback`,
+    }
+    });
+  };
+
+  const changeEmail = async () => {
+    await axios.post(
+      `https://${config.domain}/dbconnections/change_password`,
+      {
+        client_id: config.clientId,
+        email: user.email,
+        connection: config.db,
+      },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    alert(user.email+"に変更メールを送信しました。");
+  };
   const deleteUser = (async(id) =>{
 
     let result = window.confirm('削除しますか');
@@ -106,6 +174,8 @@ export const ProfileComponent = () => {
         </Col>
         {user.sub.match("auth0|.*") && 
            <>
+           <button onClick={()=>changeEmail()}>メールアドレス変更</button> 
+           <button onClick={()=>handleLinkAccount()}>Google連携</button> 
           <button onClick={()=>changePassword()}>パスワード変更</button> 
           <button onClick={()=>deleteUser(user.sub)}>退会</button>          
           </> 

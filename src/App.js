@@ -7,10 +7,13 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./views/Home";
 import Profile from "./views/Profile";
+import AuthCheck from "./views/AuthCheck";
 import UserList from "./views/UserList";
 import UserListMeta from "./views/UserListMeta";
 import UserAdd from "./views/UserAdd";
-import ChangeEmail from "./views/ChangeEmail";
+import ChangePassword from "./views/ChangePassword";
+// import LinkSocial from "./views/LinkSocial";
+import Callback from "./views/Callback";
 import ExternalApi from "./views/ExternalApi";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
@@ -41,9 +44,13 @@ const App = () => {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile} />
+            <Route path="/callback" component={Callback} />
             <Route path="/userlist" component={UserList} />
             <Route path="/useradd" component={UserAdd} />
+            <Route path="/authCheck" component={AuthCheck} />
+            <Route path="/changePassword" component={ChangePassword} />
             <Route path="/usermeta" component={UserListMeta} />
+            {/* <Route path="/social" component={LinkSocial} /> */}
             <Route path="/external-api" component={ExternalApi} />
           </Switch>
         </Container>
